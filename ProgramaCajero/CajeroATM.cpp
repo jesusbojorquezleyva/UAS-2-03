@@ -232,6 +232,7 @@ RelegirRespuestaT:
             }
             else if (Respuesta == "n")
             {
+                system("cls");
                 goto lenincorrecto;
             }
             else
@@ -241,7 +242,12 @@ RelegirRespuestaT:
                 goto RelegirRespuestaT;
             }
         }
-            
+        else
+        {
+            system("cls");
+            std::cout<<"Solo se pueden Tranferir al mismo banco, Intente con otra Cuenta\n";
+            goto lenincorrecto;
+        }  
         break;
     case 5:
     RelegirRespuesta:
