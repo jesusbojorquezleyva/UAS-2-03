@@ -6,6 +6,7 @@ int numcategorias{0};
 string gpass{"1111"};
 struct Categorias
 {
+    int indexmov{};
     double Gasto;
     double Ingreso;
     std::string Nombre;
@@ -149,18 +150,77 @@ int recorrercategorias(string categoria)
     vercategorias[numcategorias].Gasto = 0;
     vercategorias[numcategorias].Ingreso = 0;
     int g;
-    for (g = 0;g <= 20;g++)
+    for (g = 0;g <= 19;g++)
     {
-        vercategorias[numcategorias].Movimientos[g] = vercategorias[i + 1].Movimientos[g];
+        vercategorias[numcategorias].Movimientos[g] = "";
     }
     numcategorias -= 1;
     return 0;
+}
+int registrarMov()
+{
+    string cat1, cat2,mov;
+    int icat1, icat2;
+    double cantidad;
+    bool cata, catb;
+nocat:
+    DesplegarCategorias();
+    cout << "En que categorita hiciste el movimiento?\n";
+    getline(cin, cat1);
+    cata = BuscarCategoria(cat1, numcategorias);
+    if (cata == true)
+    {
+        cout << "De que categoria salio?\n";
+        getline(cin, cat2);
+        catb = BuscarCategoria(cat2, numcategorias);
+        if (catb == true)
+        {
+            cout << "Que movimiento realizo?";
+            getline(cin, mov);
+            cout << "Por que cantidad?";
+            cin >> cantidad;
+            cin.ignore(32767, '\n');
+            icat1 = BuscarindexCategoria(cat1);
+            icat2 = BuscarindexCategoria(cat2);
+            vercategorias[icat1].Ingreso += cantidad;
+            vercategorias[icat2].Gasto += cantidad;
+            if (vercategorias[icat1].indexmov >= 20)
+            {
+                int g;
+                for (g = 0;g <= 18;g++)
+                {
+                    vercategorias[icat1].Movimientos[g] =vercategorias[icat1].Movimientos[g+1];
+                }
+                vercategorias[icat1].indexmov -= 1;
+            }
+            if (vercategorias[icat2].indexmov >= 20)
+            {
+                int g;
+                for (g = 0;g <= 18;g++)
+                {
+                    vercategorias[icat2].Movimientos[g] = vercategorias[icat1].Movimientos[g + 1];
+                }
+                vercategorias[icat2].indexmov -= 1;
+            }
+            vercategorias[icat1].Movimientos[vercategorias[icat1].indexmov] = "Se ingresaron " +to_string(cantidad) + " Provenientes de: " + cat1 + " Descripcion: " + mov;
+            vercategorias[icat2].Movimientos[vercategorias[icat2].indexmov] = "Se gastaron " + to_string(cantidad) + " en: " + cat1 + " Descripcion: " + mov;
+            vercategorias[icat1].indexmov += 1;
+            vercategorias[icat2].indexmov += 1;
+        }
+    }
+    else
+    {
+        system("cls");
+        cout << "La categoria no existe, intenta de nuevo\n";
+        goto nocat;
+    }
+
 }
 int opciones()
 {
     int op;
     cout << "Que Movimiento deseas hacer?\n";
-    cout << "1)Crear nueva categoria\n2)Revisar Categorias\n3)Eliminar Categoria\n4)Cambiar Contraseña\n5)Salir\n";
+    cout << "1)Crear nueva categoria\n2)Revisar Categorias\n3)Eliminar Categoria\n4)Cambiar Contraseña\n5)Hacer Movimientos\n6)Salir\n";
     cin >> op;
     cin.ignore(32767, '\n');
     string nomcat{},resp;
@@ -217,6 +277,8 @@ int opciones()
         opciones();
         break;
     case 5:
+        break;
+    case 6:
         do
         {
             cout << "Seguro que desea cerrar sesion?  (y/n)";
