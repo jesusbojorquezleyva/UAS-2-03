@@ -66,7 +66,7 @@ int terminarTarea()
 		cout << "Uffff! No hay Tareas Pendientes :)\n";
 	else
 	{
-		cout << "Escribe el indice de la tarea\n";
+		cout << "\nEscribe el indice de la tarea\n";
 		cin >> indice;
 		Listadetareas[indice].Terminada = true;
 	}
@@ -99,11 +99,11 @@ opincorrecta:
 		Listadetareas[contador].Descripcion = descripcion;
 		Listadetareas[contador].Fecha = fecha;
 		contador++;
-		menu();
+		main();
 		break;
 	case 'n':
 		system("cls");
-		menu();
+		main();
 	default:
 		cout << "Opcion incorrecta, intente de nuevo\n";
 		goto opincorrecta;
@@ -119,7 +119,7 @@ int main()
 	cout << "Que deseas hacer?\n";
 	cout << "1)Terminar tarea\n2)Crear tarea\n3)Salir\n";
 	cin >> op;
-	cin.ignore(32676, '\n');
+	cin.ignore(32767, '\n');
 	switch (op)
 	{
 	case 1:
@@ -129,11 +129,14 @@ int main()
 		break;
 	case 2:
 		crearTarea();
+		system("cls");
+		main();
 		break;
 	case 3:
 	salir:
 		cout << "Seguro que deseas salir?s/n\n";
 		cin >> opc;
+		cin.ignore(32767, '\n');
 		if (opc == 's')
 		{
 			cout << "Hasta luego!!";
@@ -142,7 +145,7 @@ int main()
 		else if (opc == 'n')
 		{
 			system("cls");
-			menu();
+			main();
 		}
 		else
 		{
